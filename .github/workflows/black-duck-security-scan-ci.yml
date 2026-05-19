@@ -1,54 +1,36 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# Black Duck Security Action allows you to integrate Static Analysis Security Testing (SAST) and Software Composition Analysis (SCA) into your CI/CD pipelines.
-# For more information about configuring your workflow,
-# read our documentation at https://github.com/blackduck-inc/black-duck-security-scan
-
-name: CI Black Duck security scan
+name: Stats
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "main" ]
-  schedule:
-    - cron: '16 11 * * 3'
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
-      contents: read
-      pull-requests: write
-      security-events: write
-      actions: read
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v4
-      - name: Black Duck SCA scan
-        uses: blackduck-inc/black-duck-security-scan@805cbd09e806b01907bbea0f990723c2bb85abe9
+      - name: checkout repositorio
+        uses: actions/checkout@v6
+
+      - name: Setup python
+        uses: actions/setup-python@v6
+
         with:
-          ### ---------- BLACKDUCK SCA SCANNING: REQUIRED FIELDS ----------
-          blackducksca_url: ${{ vars.BLACKDUCKSCA_URL }}
-          blackducksca_token: ${{ secrets.BLACKDUCKSCA_TOKEN }}
+          python-version: '3.13'
 
-          ### ---------- COVERITY SCANNING: REQUIRED FIELDS ----------
-          coverity_url: ${{ vars.COVERITY_URL }}
-          coverity_user: ${{ secrets.COVERITY_USER }}
-          coverity_passphrase: ${{ secrets.COVERITY_PASSPHRASE }}
+      - name: Run script
+        run: python ./stats.py
 
-          ### ---------- POLARIS SCANNING: REQUIRED FIELDS ----------
-          polaris_server_url: ${{ vars.POLARIS_SERVER_URL }}
-          polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
-          polaris_assessment_types: "SCA,SAST"
+      - name: commit y push de cambios
+        uses: stefanzweifel/git-auto-commit-action@v7
 
-          ### ---------- SRM SCANNING: REQUIRED FIELDS ----------
-          srm_url: ${{ vars.SRM_URL }}
-          srm_apikey: ${{ secrets.SRM_API_KEY }}
-          srm_assessment_types: "SCA,SAST"
-
+        with:
+          commit_message: Update de estadísticas
+          commit_user_name: AltDiana # defaults to "github-actions[bot]"
+          commit_user_email: diana.altamirano7@gmail.com # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: AltDiana <diana.altamirano7@gmail.com>
