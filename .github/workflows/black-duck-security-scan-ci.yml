@@ -31,6 +31,6 @@ jobs:
 
         with:
           commit_message: Update de estadísticas
-          commit_user_name: AltDiana # defaults to "github-actions[bot]"
-          commit_user_email: diana.altamirano7@gmail.com # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
-          commit_author: AltDiana <diana.altamirano7@gmail.com>
+          commit_user_name: cynthia124To # defaults to "github-actions[bot]"
+          commit_user_email: ctoscano@estud.tesa.edu.ec # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: cynthia124T8  <ctoscano@estud.tesa.edu.ec>
